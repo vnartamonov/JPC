@@ -6,11 +6,10 @@
 
     <groupId>org.jpc</groupId>
     <artifactId>jpc</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>4.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
-        <!-- Задаём Java 21 -->
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <maven.compiler.release>21</maven.compiler.release>
@@ -28,7 +27,6 @@
             </resource>
         </resources>
         <plugins>
-            <!-- Компиляция под Java 21 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -39,31 +37,62 @@
                     <release>21</release>
                 </configuration>
             </plugin>
-
-            <!-- Создание основного JAR-файла -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.3.0</version>
-                <configuration>
-                    <finalName>JPCApplication</finalName>
-                    <archive>
-                        <manifest>
-                            <mainClass>org.jpc.j2se.JPCApplication</mainClass>
-                        </manifest>
-                        <manifestEntries>
-                            <Name>JPC Application</Name>
-                            <Author>Ian Preston</Author>
-                            <Build-Date>${maven.build.timestamp}</Build-Date>
-                            <Default-Args>-fda mem:resources/images/floppy.img -hda mem:resources/images/dosgames.img -boot fda</Default-Args>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
+                <executions>
+                    <execution>
+                        <id>default-jar</id>
+                        <phase>none</phase>
+                    </execution>
+                    <execution>
+                        <id>jpc-application</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <finalName>jpc</finalName>
+                            <classifier>application</classifier>
+                            <archive>
+                                <manifest>
+                                    <mainClass>org.jpc.j2se.JPCApplication</mainClass>
+                                </manifest>
+                                <manifestEntries>
+                                    <Name>JPC Application</Name>
+                                    <Author>Ian Preston</Author>
+                                    <Build-Date>${maven.build.timestamp}</Build-Date>
+                                    <Default-Args>-fda mem:resources/images/floppy.img -hda mem:resources/images/dosgames.img -boot fda</Default-Args>
+                                </manifestEntries>
+                            </archive>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>jpc-debugger</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <finalName>jpc</finalName>
+                            <classifier>debugger</classifier>
+                            <archive>
+                                <manifest>
+                                    <mainClass>org.jpc.debugger.JPC</mainClass>
+                                </manifest>
+                                <manifestEntries>
+                                    <Name>JPC Debugger</Name>
+                                    <Author>Ian Preston</Author>
+                                    <Build-Date>${maven.build.timestamp}</Build-Date>
+                                    <Default-Args>-fda mem:resources/images/floppy.img -hda mem:resources/images/dosgames.img -boot fda</Default-Args>
+                                </manifestEntries>
+                            </archive>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
 
-    <dependencies>
-        <!-- Зависимости, если есть -->
-    </dependencies>
 </project>
