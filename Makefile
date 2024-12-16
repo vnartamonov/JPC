@@ -1,5 +1,5 @@
-JAVA_BUILD_OPTS = -source 1.8 -target 1.8 -g
-JAVA_RELEASE_OPTS = -source 1.8 -target 1.8
+JAVA_BUILD_OPTS = -source 21 -target 21 -g
+JAVA_RELEASE_OPTS = -source 21 -target 21
 
 .PHONY: build
 build: jpc
