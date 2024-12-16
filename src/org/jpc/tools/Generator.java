@@ -25,7 +25,7 @@
     End of licence header
 */
 
-package tools;
+package org.jpc.tools;
 
 import java.io.*;
 import java.util.*;

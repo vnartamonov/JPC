@@ -1,12 +1,6 @@
-package tools;
+package org.jpc.tools;
 
 import java.io.*;
-import java.util.*;
-import java.net.*;
-import java.lang.reflect.*;
-import org.w3c.dom.*;
-import org.xml.sax.*;
-import org.jpc.emulator.execution.decoder.*;
 
 public class TestGenerator
 {

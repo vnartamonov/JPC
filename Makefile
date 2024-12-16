@@ -41,7 +41,7 @@ tools: build_core
 	mkdir -p build
 	javac $(JAVA_BUILD_OPTS) -cp build/ -d build `find src/tools -name \*.java`
 	echo "Name: JPC Tools" > jpc.manifest
-	echo "Main-Class: tools.Tools" >> jpc.manifest
+	echo "Main-Class: org.jpc.tools.Tools" >> jpc.manifest
 	echo "Author: Ian Preston" >> jpc.manifest
 
 	jar -cfm Tools.jar jpc.manifest \
@@ -56,7 +56,7 @@ tests: build_core
 	src/org/jpc/emulator/execution/Executable.java \
 	src/org/jpc/j2se/Option.java
 	echo "Name: JPC Tools" > jpc.manifest
-	echo "Main-Class: tools.TestGenerator" >> jpc.manifest
+	echo "Main-Class: org.jpc.tools.TestGenerator" >> jpc.manifest
 	echo "Class-Path: Tools.jar:." >> jpc.manifest
 
 	jar -cfm TestGen.jar jpc.manifest \

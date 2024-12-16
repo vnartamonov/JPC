@@ -1,4 +1,4 @@
-package tools;
+package org.jpc.tools;
 
 public class Tools
 {

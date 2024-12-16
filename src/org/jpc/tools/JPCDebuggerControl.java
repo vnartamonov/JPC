@@ -25,18 +25,15 @@
     End of licence header
 */
 
-package tools;
+package org.jpc.tools;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Arrays;
-import java.util.Calendar;
 
 public class JPCDebuggerControl extends EmulatorControl
 {

@@ -25,14 +25,14 @@
     End of licence header
 */
 
-package tools;
+package org.jpc.tools;
 
 import java.io.*;
 import java.util.*;
 import java.net.*;
 import java.lang.reflect.*;
 import javax.xml.parsers.*;
-import org.w3c.dom.*;
+
 import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -45,14 +45,14 @@ public class Fuzzer
     public static void main(String[] args) throws Exception
     {
         URL[] urls = new URL[]{new File(newJar).toURL()};
-        ClassLoader cl1 = new URLClassLoader(urls, tools.Fuzzer.class.getClassLoader());
+        ClassLoader cl1 = new URLClassLoader(urls, Fuzzer.class.getClassLoader());
         Class opts = cl1.loadClass("org.jpc.j2se.Option");
         Method parse = opts.getMethod("parse", String[].class);
         args = (String[])parse.invoke(opts, (Object)args);
         PCHandle pc1 = new PCHandle(cl1, true, args);
 
         URL[] urls2 = new URL[]{new File(oldJar).toURL()};
-        ClassLoader cl2 = new URLClassLoader(urls2, tools.Fuzzer.class.getClassLoader());
+        ClassLoader cl2 = new URLClassLoader(urls2, Fuzzer.class.getClassLoader());
         PCHandle pc2 = new PCHandle(cl2, false, args);
      
         // will succeed

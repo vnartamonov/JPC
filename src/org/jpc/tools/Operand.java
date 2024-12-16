@@ -1,4 +1,4 @@
-package tools;
+package org.jpc.tools;
 
 import java.util.*;
 
