@@ -10,6 +10,10 @@ or get a list of options by running:<br>
 java -jar JPCApplication.jar -help
 
 ### Building
+
+mvn clean package
+
+
 To build JPC run:<br>
 make application
 
