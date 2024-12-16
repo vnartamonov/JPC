@@ -62,13 +62,13 @@ public class JPCApplication extends PCMonitorFrame implements PCControl
 {
     private static final Logger LOGGING = Logger.getLogger(JPCApplication.class.getName());
     private static final URI JPC_URI = URI.create("http://jpc.sourceforge.net/");
-    private static final String IMAGES_PATH = "resources/images/";
+    private static final String IMAGES_PATH = "images/";
     private static final int MONITOR_WIDTH = 720;
     private static final int MONITOR_HEIGHT = 400 + 100;
     private static final String[] DEFAULT_ARGS =
     {
-        "-fda", "mem:resources/images/floppy.img",
-        "-hda", "mem:resources/images/dosgames.img",
+        "-fda", "mem:images/floppy.img",
+        "-hda", "mem:images/dosgames.img",
         "-boot", "fda"
     };
     private static final String ABOUT_US =
@@ -82,7 +82,7 @@ public class JPCApplication extends PCMonitorFrame implements PCControl
     static
     {
         ClassLoader context = Thread.currentThread().getContextClassLoader();
-        URL licence = context.getResource("resources/licence.html");
+        URL licence = context.getResource("licence.html");
         if (licence != null)
         {
             try
@@ -252,7 +252,7 @@ public class JPCApplication extends PCMonitorFrame implements PCControl
             public void actionPerformed(ActionEvent evt)
             {
                 JFrame help = new JFrame("JPC - Getting Started");
-                help.setIconImage(Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("resources/icon.png")));
+                help.setIconImage(Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("icon.png")));
                 help.getContentPane().add("Center", new JScrollPane(LICENCE));
                 help.setBounds(300, 200, MONITOR_WIDTH + 20, MONITOR_HEIGHT - 70);
                 help.setVisible(true);
@@ -775,7 +775,7 @@ public class JPCApplication extends PCMonitorFrame implements PCControl
         app.setBounds(100, 100, MONITOR_WIDTH + 20, MONITOR_HEIGHT + 70);
         try
         {
-            app.setIconImage(Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("resources/icon.png")));
+            app.setIconImage(Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("icon.png")));
         } catch (Exception e) {}
 
         app.validate();

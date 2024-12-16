@@ -63,7 +63,7 @@
                                     <Name>JPC Application</Name>
                                     <Author>Ian Preston</Author>
                                     <Build-Date>${maven.build.timestamp}</Build-Date>
-                                    <Default-Args>-fda mem:resources/images/floppy.img -hda mem:resources/images/dosgames.img -boot fda</Default-Args>
+                                    <Default-Args>-fda mem:images/floppy.img -hda mem:images/dosgames.img -boot fda</Default-Args>
                                 </manifestEntries>
                             </archive>
                         </configuration>
@@ -85,7 +85,7 @@
                                     <Name>JPC Debugger</Name>
                                     <Author>Ian Preston</Author>
                                     <Build-Date>${maven.build.timestamp}</Build-Date>
-                                    <Default-Args>-fda mem:resources/images/floppy.img -hda mem:resources/images/dosgames.img -boot fda</Default-Args>
+                                    <Default-Args>-fda mem:images/floppy.img -hda mem:images/dosgames.img -boot fda</Default-Args>
                                 </manifestEntries>
                             </archive>
                         </configuration>

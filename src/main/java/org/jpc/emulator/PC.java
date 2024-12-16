@@ -174,8 +174,8 @@ public class PC {
             parts.add(new EthernetCard());
 
         //BIOSes
-        parts.add(new SystemBIOS(Option.bios.value("/resources/bios/bios.bin")));
-        parts.add(new VGABIOS("/resources/bios/vgabios.bin"));
+        parts.add(new SystemBIOS(Option.bios.value("/bios/bios.bin")));
+        parts.add(new VGABIOS("/bios/vgabios.bin"));
 
         if (Option.sound.value())
         {
@@ -1185,8 +1185,8 @@ public class PC {
 
                 if (args.length == 0) {
                     LOGGING.log(Level.INFO, "No configuration specified, using defaults");
-                    args = new String[]{"-fda", "mem:resources/images/floppy.img",
-                                "-hda", "mem:resources/images/dosgames.img", "-boot", "fda"
+                    args = new String[]{"-fda", "mem:images/floppy.img",
+                                "-hda", "mem:images/dosgames.img", "-boot", "fda"
                             };
                 } else {
                     LOGGING.log(Level.INFO, "Using configuration specified in manifest");

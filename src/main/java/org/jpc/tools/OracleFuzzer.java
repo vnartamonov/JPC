@@ -41,7 +41,7 @@ public class OracleFuzzer
     public static int codeEIP = 0x2000;
 
     private static String[] pcargs = new String[]
-            {"-max-block-size", "1", "-boot", "hda", "-hda", "linux.img", "-ram", "4", "-bios", "/resources/bios/fuzzerBIOS"};
+            {"-max-block-size", "1", "-boot", "hda", "-hda", "linux.img", "-ram", "4", "-bios", "/bios/fuzzerBIOS"};
 
     public static byte[] real_mode_idt = new byte[0x120];
     static

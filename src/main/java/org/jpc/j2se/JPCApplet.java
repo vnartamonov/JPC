@@ -206,8 +206,8 @@ public class JPCApplet extends JApplet
 
             try
             {
-                play = ImageIO.read(getClass().getClassLoader().getResourceAsStream("resources/smallplay.png"));
-                pause = ImageIO.read(getClass().getClassLoader().getResourceAsStream("resources/smallpause.png"));
+                play = ImageIO.read(getClass().getClassLoader().getResourceAsStream("smallplay.png"));
+                pause = ImageIO.read(getClass().getClassLoader().getResourceAsStream("smallpause.png"));
                 setPreferredSize(new Dimension(play.getWidth(), play.getHeight()));
             }
             catch (Exception e) {}
@@ -499,7 +499,7 @@ public class JPCApplet extends JApplet
 
             try
             {
-                URL url = JPCApplet.class.getClassLoader().getResource("resources/JPCLogo.png");
+                URL url = JPCApplet.class.getClassLoader().getResource("JPCLogo.png");
                 splashImage = ImageIO.read(url);
                 Graphics g = splashImage.createGraphics();
                 g.setColor(new Color(255, 255, 255, 190));
@@ -510,7 +510,7 @@ public class JPCApplet extends JApplet
             
             try
             {
-                URL url = JPCApplet.class.getClassLoader().getResource("resources/tick.png");
+                URL url = JPCApplet.class.getClassLoader().getResource("tick.png");
                 tickImage = ImageIO.read(url);
             }
             catch (Exception e) {}
