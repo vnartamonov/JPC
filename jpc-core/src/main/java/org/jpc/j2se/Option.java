@@ -56,6 +56,7 @@ public abstract class Option {
     public static final Switch trace_ide = createSwitch("trace-ide");
     public static final Switch log_fault = createSwitch("log-fault");
     public static final Opt eip_poll = opt("eip-poll");
+    public static final Switch log_tlb_null = createSwitch("log-tlb-null");
 
     public static final Switch printCHS = createSwitch("printCHS");
     public static final Switch help = createSwitch("help");

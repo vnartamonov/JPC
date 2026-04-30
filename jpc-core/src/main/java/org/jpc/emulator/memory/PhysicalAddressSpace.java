@@ -859,8 +859,22 @@ public final class PhysicalAddressSpace extends AddressSpace implements Hardware
         try {
             return quickIndex[i >>> INDEX_SHIFT];
         } catch (ArrayIndexOutOfBoundsException e) {
+            int topIdx = i >>> TOP_INDEX_SHIFT;
+            int botIdx = (i >>> BOTTOM_INDEX_SHIFT) & BOTTOM_INDEX_MASK;
             try {
-                return index[i >>> TOP_INDEX_SHIFT][(i >>> BOTTOM_INDEX_SHIFT) & BOTTOM_INDEX_MASK];
+                Memory m = index[topIdx][botIdx];
+                if (m == null) {
+                    // index[topIdx] row exists (otherwise NPE would have fired)
+                    // but the specific block was never mapped via setMemoryBlockAt.
+                    // Java's default array initialisation leaves the slot as null;
+                    // returning null here would propagate into TLB caches and
+                    // eventually cause NPE in the executor. UNCONNECTED is the
+                    // semantically correct fallback for an unmapped phys addr.
+                    if (TlbNullLogger.enabled())
+                        TlbNullLogger.physBlockNull(i, topIdx, botIdx);
+                    return UNCONNECTED;
+                }
+                return m;
             } catch (NullPointerException n) {
                 return UNCONNECTED;
             }
