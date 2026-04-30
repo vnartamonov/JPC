@@ -35,18 +35,25 @@ public class Opcode
     public static String HEADER;
     static
     {
-        try {
-            String tmp = "";
-            BufferedReader r = new BufferedReader(new FileReader("HEADER"));
+        try (InputStream in = Opcode.class.getResourceAsStream("/HEADER");
+             BufferedReader r = new BufferedReader(in == null
+                     ? new FileReader("HEADER")
+                     : new InputStreamReader(in)))
+        {
+            StringBuilder tmp = new StringBuilder();
             String line;
             while ((line = r.readLine()) != null)
-                tmp += line + "\n";
-            HEADER = tmp + "\n";
+                tmp.append(line).append('\n');
+            HEADER = tmp.append('\n').toString();
         } catch (IOException e)
         {
             e.printStackTrace();
         }
     }
+
+    private static final String OPCODES_DIR = System.getProperty(
+            "jpc.opcodes.dir",
+            "jpc-core/src/main/java/org/jpc/emulator/execution/opcodes");
     public static final boolean DEBUG_SIZE = true;
     final String name;
     final Operand[] operands;
@@ -374,7 +381,7 @@ public class Opcode
     public void writeToFile(String mode)
     {
         try {
-            BufferedWriter w = new BufferedWriter(new FileWriter("src/org/jpc/emulator/execution/opcodes/"+mode+"/"+getName()+".java"));
+            BufferedWriter w = new BufferedWriter(new FileWriter(OPCODES_DIR + "/" + mode + "/" + getName() + ".java"));
             w.write(getSource(mode));
             w.flush();
             w.close();

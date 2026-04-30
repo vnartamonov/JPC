@@ -33,7 +33,6 @@
 
 package org.jpc.emulator;
 
-import org.jpc.debugger.LinearMemoryViewer;
 import org.jpc.emulator.execution.decoder.BasicBlock;
 import org.jpc.emulator.execution.decoder.DebugBasicBlock;
 import org.jpc.emulator.execution.decoder.Disassembler;
@@ -443,7 +442,7 @@ public class PC {
     {
         if (!linear)
             return physicalAddr.getPage(page, data);
-        return physicalAddr.getPage(LinearMemoryViewer.translateLinearAddressToInt(physicalAddr, processor, page), data);
+        return physicalAddr.getPage(LinearAddressTranslator.translateLinearAddressToInt(physicalAddr, processor, page), data);
     }
 
     public void loadPage(Integer page, byte[] data, Boolean linear) throws IOException
@@ -451,7 +450,7 @@ public class PC {
         if (!linear)
             physicalAddr.setPage(page, data);
         else
-            physicalAddr.setPage(LinearMemoryViewer.translateLinearAddressToInt(physicalAddr, processor, page), data);
+            physicalAddr.setPage(LinearAddressTranslator.translateLinearAddressToInt(physicalAddr, processor, page), data);
     }
 
     public void triggerSpuriousInterrupt()

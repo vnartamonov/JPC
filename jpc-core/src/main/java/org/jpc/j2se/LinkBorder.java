@@ -42,7 +42,8 @@ import java.net.*;
 import java.util.logging.*;
 
 import javax.swing.border.*;
- 
+
+@SuppressWarnings("removal")
 public class LinkBorder extends LineBorder implements MouseListener, MouseMotionListener
 {
     private static final Logger LOGGING = Logger.getLogger(LinkBorder.class.getName());

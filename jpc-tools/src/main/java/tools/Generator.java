@@ -125,7 +125,11 @@ public class Generator
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder db = dbf.newDocumentBuilder();
-            return db.parse("src/tools/Opcodes_"+mode+".xml");
+            String resource = "/Opcodes_" + mode + ".xml";
+            java.io.InputStream in = Generator.class.getResourceAsStream(resource);
+            if (in != null)
+                return db.parse(in);
+            return db.parse("jpc-tools/src/main/resources/Opcodes_" + mode + ".xml");
         }catch(ParserConfigurationException pce) {
             pce.printStackTrace();
         }catch(SAXException se) {

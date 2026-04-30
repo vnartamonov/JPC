@@ -49,6 +49,7 @@ import org.jpc.emulator.*;
 import org.jpc.emulator.pci.peripheral.*;
 import org.jpc.support.*;
 
+@SuppressWarnings("removal")
 public class JPCApplet extends JApplet
 {
     public static final String VERSION = "2.035";
