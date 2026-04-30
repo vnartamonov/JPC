@@ -174,6 +174,7 @@ public class PC {
 
         //BIOSes
         parts.add(new SystemBIOS(Option.bios.value("/resources/bios/bios.bin")));
+        parts.add(new MpTable());
         parts.add(new VGABIOS("/resources/bios/vgabios.bin"));
 
         if (Option.sound.value())
