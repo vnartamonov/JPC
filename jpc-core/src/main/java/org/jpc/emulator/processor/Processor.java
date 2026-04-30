@@ -83,6 +83,25 @@ public class Processor implements HardwareComponent
     public static final int SYSENTER_CS_MSR = 0x174;
     public static final int SYSENTER_ESP_MSR = 0x175;
     public static final int SYSENTER_EIP_MSR = 0x176;
+
+    // Architectural MSRs queried by modern OSes (NetBSD, Linux) on early boot.
+    // getMSR() falls back to 0 for unset entries; we seed the few where 0 is the wrong default.
+    public static final int IA32_TSC_MSR            = 0x10;
+    public static final int IA32_APIC_BASE_MSR      = 0x1B;
+    public static final int IA32_BIOS_SIGN_ID_MSR   = 0x8B;
+    public static final int IA32_MTRRCAP_MSR        = 0xFE;
+    public static final int IA32_MISC_ENABLE_MSR    = 0x1A0;
+    public static final int IA32_PAT_MSR            = 0x277;
+    public static final int IA32_MTRR_DEF_TYPE_MSR  = 0x2FF;
+
+    // LAPIC base 0xFEE00000 + bit 8 (BSP) + bit 11 (global enable).
+    public static final long IA32_APIC_BASE_DEFAULT = 0xFEE00900L;
+    // 8 variable ranges (VCNT) | fixed-range supported (bit 8) | WC supported (bit 10).
+    public static final long IA32_MTRRCAP_DEFAULT   = 0x508L;
+    // Intel reset value for PAT: WB, WT, UC-, UC, WB, WT, UC-, UC.
+    public static final long IA32_PAT_DEFAULT       = 0x0007040600070406L;
+    // Fast Strings enable; everything else cleared.
+    public static final long IA32_MISC_ENABLE_DEFAULT = 0x1L;
     public static final int RPL_MASK = 0xfffc;
     public static final int EAX_INDEX = 0;
     public static final int AX_INDEX = 1;
@@ -164,7 +183,7 @@ public class Processor implements HardwareComponent
 
     private static boolean SKIP_SLEEPS = Option.max_instructions_per_block.intValue(1000) == 1;
 
-    public static final int cpuLevel = Option.cpulevel.intValue(5);
+    public static final int cpuLevel = Option.cpulevel.intValue(6);
     public int eip;
     public Segment cs, ds, ss, es, fs, gs;
     public Segment idtr, gdtr, ldtr, tss;
@@ -1409,7 +1428,22 @@ public class Processor implements HardwareComponent
         ioports = null;
         alignmentChecking = false;
         modelSpecificRegisters = new HashMap<Integer, Long>();
+        seedDefaultMSRs();
         updateSegmentArray();
+    }
+
+    /**
+     * Seed model-specific registers with sensible non-zero defaults that some
+     * guest OSes (NetBSD, modern Linux) read during early boot. getMSR() already
+     * returns 0 for unset entries, so we only seed values where 0 is wrong.
+     */
+    private void seedDefaultMSRs()
+    {
+        modelSpecificRegisters.put(IA32_APIC_BASE_MSR,     IA32_APIC_BASE_DEFAULT);
+        modelSpecificRegisters.put(IA32_MTRRCAP_MSR,       IA32_MTRRCAP_DEFAULT);
+        modelSpecificRegisters.put(IA32_PAT_MSR,           IA32_PAT_DEFAULT);
+        modelSpecificRegisters.put(IA32_MISC_ENABLE_MSR,   IA32_MISC_ENABLE_DEFAULT);
+        modelSpecificRegisters.put(IA32_MTRR_DEF_TYPE_MSR, 0L);
     }
 
     public final boolean checkIOPermissions8(int port)
@@ -3924,7 +3958,7 @@ public class Processor implements HardwareComponent
         r_esi.set32(0);
         r_ebp.set32(0);
         r_esp.set32(0);
-        int cpulevel = Option.cpulevel.intValue(5);
+        int cpulevel = Option.cpulevel.intValue(6);
         if (cpulevel == 4)
             r_edx.set32(0x00000433); // 486
         else if (cpulevel == 5)
@@ -3970,7 +4004,7 @@ public class Processor implements HardwareComponent
         updateSegmentArray();
 
         modelSpecificRegisters.clear();
-        //Will need to set any MSRs here
+        seedDefaultMSRs();
 
         fpu.init();
     }
