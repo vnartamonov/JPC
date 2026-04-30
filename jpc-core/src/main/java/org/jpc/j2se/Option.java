@@ -54,6 +54,8 @@ public abstract class Option {
     public static final Switch history = createSwitch("history");
     public static final Switch useBochs = createSwitch("bochs");
     public static final Switch trace_ide = createSwitch("trace-ide");
+    public static final Switch log_fault = createSwitch("log-fault");
+    public static final Opt eip_poll = opt("eip-poll");
 
     public static final Switch printCHS = createSwitch("printCHS");
     public static final Switch help = createSwitch("help");
@@ -119,6 +121,8 @@ public abstract class Option {
         System.out.println("-ips $number - number of emulated instructions per emulated second - a larger value will cause a slower apparent time in the VM");
         System.out.println("-cpulevel $number - 4 = 486, 5 = Pentium, 6 = Pentium II (default)");
         System.out.println("-trace-ide - log every ATA/ATAPI command issued to IDEChannel at INFO level");
+        System.out.println("-log-fault - dump CPU state (registers, instruction bytes, top-of-stack) at every protected-mode/v8086 exception dispatch");
+        System.out.println("-eip-poll $ms - log a one-line CPU snapshot (EIP, mode, key regs) every $ms milliseconds; useful when the guest hangs without faulting");
         System.out.println();
         System.out.println("-sound - enable sound");
         System.out.println();

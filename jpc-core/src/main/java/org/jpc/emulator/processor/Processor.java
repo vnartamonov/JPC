@@ -4111,6 +4111,9 @@ public class Processor implements HardwareComponent
     public final void handleRealModeException(ProcessorException e)
     {
         System.out.printf("RM Exception vector=%x\n", e.getType().vector());
+        if (Option.log_fault.isSet()) {
+            LOGGING.log(Level.INFO, "{0}", FaultLogger.format(this, e, eip, r_esp.get32()));
+        }
         handleRealModeInterrupt(e.getType().vector());
     }
 
@@ -4157,6 +4160,10 @@ public class Processor implements HardwareComponent
         int savedEIP = eip;
         Segment savedCS = cs;
         Segment savedSS = ss;
+
+        if (Option.log_fault.isSet()) {
+            LOGGING.log(Level.INFO, "{0}", FaultLogger.format(this, pe, savedEIP, savedESP));
+        }
 
         try {
             followProtectedModeException(pe.getType().vector(), pe.hasErrorCode(), pe.getErrorCode(), false, false);
@@ -4574,6 +4581,10 @@ public class Processor implements HardwareComponent
         int savedEIP = eip;
         Segment savedCS = cs;
         Segment savedSS = ss;
+
+        if (Option.log_fault.isSet()) {
+            LOGGING.log(Level.INFO, "{0}", FaultLogger.format(this, pe, savedEIP, savedESP));
+        }
 
         try {
             followVirtual8086ModeException(pe.getType().vector(), pe.hasErrorCode(), pe.getErrorCode(), false, false);

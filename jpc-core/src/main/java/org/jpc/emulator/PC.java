@@ -985,9 +985,16 @@ public class PC {
         {
             System.out.printf("Error at cs:eip = %08x\n", processor.getInstructionPointer());
             System.out.printf("Last exit eip = %08x\n", BasicBlock.lastExitEip);
-            //printHistory();
             System.out.println("*****");
-            printInsHistory();
+            System.out.println("--- emulator-side exception stack trace ---");
+            e.printStackTrace(System.out);
+            System.out.println("--- end stack trace ---");
+            try {
+                printInsHistory();
+            } catch (Throwable hist) {
+                System.out.println("printInsHistory itself threw " + hist
+                        + " (suppressed; original error remains the one above)");
+            }
             System.out.printf("Error at cs:eip = %08x\n", processor.getInstructionPointer());
             throw e;
         }

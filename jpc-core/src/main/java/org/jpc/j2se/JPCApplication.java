@@ -783,6 +783,13 @@ public class JPCApplication extends PCMonitorFrame implements PCControl
 
         PC pc = new PC(new VirtualClock(), args);
 
+        if (Option.eip_poll.value() != null) {
+            long period = Option.eip_poll.intValue(0);
+            if (period > 0) {
+                new org.jpc.emulator.processor.EipPoller(pc.getProcessor(), period).start();
+            }
+        }
+
         String net = ArgProcessor.findVariable(args, "net", "no");
         if (net.startsWith("hub:"))
         {
