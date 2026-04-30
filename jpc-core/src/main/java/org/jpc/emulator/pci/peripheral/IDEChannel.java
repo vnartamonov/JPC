@@ -34,6 +34,7 @@
 package org.jpc.emulator.pci.peripheral;
 
 import org.jpc.emulator.motherboard.*;
+import org.jpc.j2se.Option;
 import org.jpc.support.BlockDevice;
 import org.jpc.emulator.*;
 
@@ -52,6 +53,12 @@ class IDEChannel extends AbstractHardwareComponent implements IODevice {
     private int ioBase,  ioBaseTwo,  irq;
     private InterruptController irqDevice;
     private int nextDriveSerial;
+    private final IdeStats stats = new IdeStats();
+
+    /** Diagnostic command counters, populated on every ATA/ATAPI dispatch. */
+    public IdeStats getStats() {
+        return stats;
+    }
     public static final String CDLABEL = "CDROM";//"JPC CD-ROM";
 
     public void saveState(DataOutput output) throws IOException {
@@ -335,6 +342,14 @@ class IDEChannel extends AbstractHardwareComponent implements IODevice {
                 /* ignore commands to non existant slave */
                 if (currentDevice != devices[0] && currentDevice.drive == null) {
                     break;
+                }
+                stats.recordAta(data);
+                if (Option.trace_ide.isSet()) {
+                    LOGGING.log(Level.INFO, "ATA cmd 0x{0} ({1})",
+                            new Object[]{
+                                    String.format("%02X", data & 0xFF),
+                                    IdeStats.ataMnemonic(data)
+                            });
                 }
                 switch (data) {
                     case IDEState.WIN_IDENTIFY:
@@ -1506,7 +1521,16 @@ class IDEChannel extends AbstractHardwareComponent implements IODevice {
         }
 
         private void atapiCommand() {
-            switch (0xff & ioBuffer[0]) {
+            int atapiOp = 0xff & ioBuffer[0];
+            stats.recordAtapi(atapiOp);
+            if (Option.trace_ide.isSet()) {
+                LOGGING.log(Level.INFO, "ATAPI cmd 0x{0} ({1})",
+                        new Object[]{
+                                String.format("%02X", atapiOp),
+                                IdeStats.atapiMnemonic(atapiOp)
+                        });
+            }
+            switch (atapiOp) {
                 case GPCMD_TEST_UNIT_READY:
                     if (drive.isInserted()) {
                         atapiCommandOk();

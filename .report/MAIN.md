@@ -17,6 +17,7 @@
 | 0003  | 2026-04-30 | B4: Intel MP 1.4 table в BIOS shadow ROM на 0xFC000                  | Готов    | [0003.md](0003.md)  |
 | 0004  | 2026-04-30 | B3: LAPIC stub @0xFEE00000 + IO-APIC stub @0xFEC00000                | Готов    | [0004.md](0004.md)  |
 | 0005  | 2026-04-30 | B5: ACPI 1.0 (RSDP+RSDT+MADT+FACP+DSDT) на 0xFB000                   | Готов    | [0005.md](0005.md)  |
+| 0006  | 2026-04-30 | B6: IDE/wd(4) диагностика — IdeStats + флаг -trace-ide               | Готов    | [0006.md](0006.md)  |
 
 ## Текущий target ОС
 

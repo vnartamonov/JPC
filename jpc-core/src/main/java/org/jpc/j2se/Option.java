@@ -53,6 +53,7 @@ public abstract class Option {
     public static final Switch fullscreen = createSwitch("fullscreen");
     public static final Switch history = createSwitch("history");
     public static final Switch useBochs = createSwitch("bochs");
+    public static final Switch trace_ide = createSwitch("trace-ide");
 
     public static final Switch printCHS = createSwitch("printCHS");
     public static final Switch help = createSwitch("help");
@@ -117,6 +118,7 @@ public abstract class Option {
         System.out.println("-ram $megabytes - the amount RAM the virtual machine should have");
         System.out.println("-ips $number - number of emulated instructions per emulated second - a larger value will cause a slower apparent time in the VM");
         System.out.println("-cpulevel $number - 4 = 486, 5 = Pentium, 6 = Pentium II (default)");
+        System.out.println("-trace-ide - log every ATA/ATAPI command issued to IDEChannel at INFO level");
         System.out.println();
         System.out.println("-sound - enable sound");
         System.out.println();
