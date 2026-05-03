@@ -70,7 +70,8 @@ public class PC {
 
     public static int SYS_RAM_SIZE;
     public static final int DEFAULT_RAM_SIZE = Option.ram.intValue(16) * 1024 * 1024;
-    public static final int INSTRUCTIONS_BETWEEN_INTERRUPTS = 1; 
+    public static final int INSTRUCTIONS_BETWEEN_INTERRUPTS =
+        Option.deterministic.isSet() ? 1 : Option.irq_check_period.intValue(100);
     public static final boolean ETHERNET = Option.ethernet.isSet();
 
     public static volatile boolean compile = Option.compile.isSet();
@@ -1090,13 +1091,11 @@ public class PC {
                 }
             }
         } catch (ProcessorException p) {
-            System.out.printf("Proc exception %s\n", p);
-             processor.handleRealModeException(p);
+            LOGGING.log(Level.FINE, "Proc exception in RM", p);
+            processor.handleRealModeException(p);
         }
         catch (ModeSwitchException e)
         {
-            //State.print(processor);
-            //e.printStackTrace();
             LOGGING.log(Level.FINE, "Mode switch in RM @ cs:eip " + Integer.toHexString(processor.cs.getBase()) + ":" + Integer.toHexString(processor.eip));
         }
         return x86Count;

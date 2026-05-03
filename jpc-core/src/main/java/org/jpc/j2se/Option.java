@@ -73,6 +73,7 @@ public abstract class Option {
     public static final Opt ss = opt("ss");
     public static final Opt ram = opt("ram");
     public static final Opt ips = opt("ips");
+    public static final Opt irq_check_period = opt("irq-check-period");
     public static final Opt cpulevel = opt("cpulevel");
     public static final Opt timeslowdown = opt("time-slowdown");
     public static final Switch singlesteptime = createSwitch("single-step-time");
@@ -122,6 +123,7 @@ public abstract class Option {
         System.out.println("-ss $file - snapshot file to load");
         System.out.println("-ram $megabytes - the amount RAM the virtual machine should have");
         System.out.println("-ips $number - number of emulated instructions per emulated second - a larger value will cause a slower apparent time in the VM");
+        System.out.println("-irq-check-period $n - run $n x86 instructions between interrupt-controller polls (default 100; forced to 1 under -deterministic)");
         System.out.println("-cpulevel $number - 4 = 486, 5 = Pentium, 6 = Pentium II (default)");
         System.out.println("-trace-ide - log every ATA/ATAPI command issued to IDEChannel at INFO level");
         System.out.println("-log-fault - dump CPU state (registers, instruction bytes, top-of-stack) at every protected-mode/v8086 exception dispatch");

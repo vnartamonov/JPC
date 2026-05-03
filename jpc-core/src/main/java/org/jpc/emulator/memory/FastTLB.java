@@ -30,8 +30,7 @@ package org.jpc.emulator.memory;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.BitSet;
 
 public class FastTLB extends TLB
 {
@@ -44,7 +43,7 @@ public class FastTLB extends TLB
         return (addr & TLB_MASK) >>> 12;
     }
 
-    private final Set<Integer> nonGlobalPages = new HashSet<Integer>();
+    private final BitSet nonGlobalPages = new BitSet(AddressSpace.INDEX_SIZE);
     private TLB_Entry[] cache = new TLB_Entry[TLB_SIZE];
     private boolean split_large = false;
     private boolean globalPagesEnabled;
@@ -61,9 +60,9 @@ public class FastTLB extends TLB
     public void saveState(DataOutput output) throws IOException {
         output.writeInt(pageSize.length);
         output.write(pageSize);
-        output.writeInt(nonGlobalPages.size());
-        for (Integer value : nonGlobalPages)
-            output.writeInt(value.intValue());
+        output.writeInt(nonGlobalPages.cardinality());
+        for (int idx = nonGlobalPages.nextSetBit(0); idx >= 0; idx = nonGlobalPages.nextSetBit(idx + 1))
+            output.writeInt(idx);
     }
 
     @Override
@@ -74,7 +73,7 @@ public class FastTLB extends TLB
         nonGlobalPages.clear();
         int count = input.readInt();
         for (int i=0; i < count; i++)
-            nonGlobalPages.add(Integer.valueOf(input.readInt()));
+            nonGlobalPages.set(input.readInt());
     }
 
     @Override
@@ -95,8 +94,7 @@ public class FastTLB extends TLB
     @Override
     public void flushNonGlobal() {
         if (globalPagesEnabled) {
-            for (Integer value : nonGlobalPages) {
-                int page = value.intValue();
+            for (int page = nonGlobalPages.nextSetBit(0); page >= 0; page = nonGlobalPages.nextSetBit(page + 1)) {
                 int index = TLBIndexOf(page << AddressSpace.INDEX_SHIFT);
                 if ((cache[index] == null) || (!cache[index].samePage(page)))
                     continue;
@@ -115,7 +113,7 @@ public class FastTLB extends TLB
 
     @Override
     public void addNonGlobalPage(int addr) {
-        nonGlobalPages.add(addr >>> AddressSpace.INDEX_SHIFT);
+        nonGlobalPages.set(addr >>> AddressSpace.INDEX_SHIFT);
     }
 
     @Override
@@ -164,22 +162,21 @@ public class FastTLB extends TLB
 
     @Override
     protected void replaceBlocks(Memory oldBlock, Memory newBlock) {
-        System.out.println("Replace blocks used!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
 
     @Override
     public void invalidateTLBEntry(int addr) {
         int index = addr >>> AddressSpace.INDEX_SHIFT;
         if (pageSize[index] == FOUR_K) {
-            nonGlobalPages.remove(Integer.valueOf(index));
+            nonGlobalPages.clear(index);
             int page = TLBIndexOf(addr);
             if ((cache[page] == null) || (!cache[page].samePage(addr)))
                 return;
             cache[page] = null;
         } else {
             index &= 0xFFC00;
+            nonGlobalPages.clear(index, index + 1024);
             for (int i = 0; i < 1024; i++, index++) {
-                nonGlobalPages.remove(Integer.valueOf(index));
                 int page = TLBIndexOf(index << AddressSpace.INDEX_SHIFT);
                 if ((cache[page] == null) || (!cache[page].samePage(addr)))
                     continue;
