@@ -18279,7 +18279,7 @@ ops[0x3c7] = new OpcodeDecoder() {
         {
             switch (reg) {
             case 0x00: return new org.jpc.emulator.execution.opcodes.pm.UnimplementedOpcode(blockStart, eip, prefices, input);
-            case 0x01:
+            case 0x01: return new org.jpc.emulator.execution.opcodes.pm.cmpxchg8b_M_mem(blockStart, eip, prefices, input);
             case 0x02:
             case 0x03:
             case 0x04:
@@ -18292,7 +18292,7 @@ ops[0x3c7] = new OpcodeDecoder() {
         {
             switch (reg) {
             case 0x00: return new org.jpc.emulator.execution.opcodes.pm.UnimplementedOpcode(blockStart, eip, prefices, input);
-            case 0x01:
+            case 0x01: return new org.jpc.emulator.execution.opcodes.pm.cmpxchg8b_M(blockStart, eip, prefices, input);
             case 0x02:
             case 0x03:
             case 0x04:
@@ -22272,7 +22272,7 @@ ops[0x7c7] = new OpcodeDecoder() {
         {
             switch (reg) {
             case 0x00: return new org.jpc.emulator.execution.opcodes.pm.UnimplementedOpcode(blockStart, eip, prefices, input);
-            case 0x01:
+            case 0x01: return new org.jpc.emulator.execution.opcodes.pm.cmpxchg8b_M_mem(blockStart, eip, prefices, input);
             case 0x02:
             case 0x03:
             case 0x04:
@@ -22285,7 +22285,7 @@ ops[0x7c7] = new OpcodeDecoder() {
         {
             switch (reg) {
             case 0x00: return new org.jpc.emulator.execution.opcodes.pm.UnimplementedOpcode(blockStart, eip, prefices, input);
-            case 0x01:
+            case 0x01: return new org.jpc.emulator.execution.opcodes.pm.cmpxchg8b_M(blockStart, eip, prefices, input);
             case 0x02:
             case 0x03:
             case 0x04:

@@ -666,6 +666,61 @@ public final class LinearAddressSpace extends AddressSpace implements HardwareCo
         }
     }
 
+    public long getQuadWord(int offset)
+    {
+        try
+        {
+            try
+            {
+                return getReadMemoryBlockAt(offset).getQuadWord(offset & BLOCK_MASK);
+            }
+            catch (ArrayIndexOutOfBoundsException e)
+            {
+                return super.getQuadWord(offset);
+            }
+        }
+        catch (NullPointerException e) {}
+        catch (ProcessorException p) {}
+
+        Memory m = validateTLBEntryRead(offset);
+        try
+        {
+            return m.getQuadWord(offset & BLOCK_MASK);
+        }
+        catch (ArrayIndexOutOfBoundsException e)
+        {
+            return getQuadWordInBytes(offset);
+        }
+    }
+
+    public void setQuadWord(int offset, long data)
+    {
+        try
+        {
+            try
+            {
+                getWriteMemoryBlockAt(offset).setQuadWord(offset & BLOCK_MASK, data);
+            }
+            catch (ArrayIndexOutOfBoundsException e)
+            {
+                super.setQuadWord(offset, data);
+            }
+            return;
+        }
+        catch (NullPointerException e) {}
+        catch (ProcessorException p) {}
+
+        Memory m = validateTLBEntryWrite(offset);
+        try
+        {
+            m.setQuadWord(offset & BLOCK_MASK, data);
+        }
+        catch (ArrayIndexOutOfBoundsException e)
+        {
+            setQuadWordInBytes(offset, data);
+        }
+    }
+
     /**
      * Clears the underlying <code>PhysicalAddressSpace of this object.</code>
      */
