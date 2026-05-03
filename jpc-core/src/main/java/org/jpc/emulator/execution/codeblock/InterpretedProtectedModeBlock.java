@@ -27,6 +27,7 @@
 
 package org.jpc.emulator.execution.codeblock;
 
+import java.util.logging.*;
 import org.jpc.emulator.execution.decoder.*;
 import org.jpc.emulator.execution.*;
 import org.jpc.emulator.execution.opcodes.pm.pushfd;
@@ -35,6 +36,8 @@ import static org.jpc.emulator.execution.Executable.*;
 
 public class InterpretedProtectedModeBlock implements ProtectedModeCodeBlock
 {
+    private static final Logger LOGGING = Logger.getLogger(InterpretedProtectedModeBlock.class.getName());
+
     private final BasicBlock b;
     private boolean valid = true;
 
@@ -79,6 +82,11 @@ public class InterpretedProtectedModeBlock implements ProtectedModeCodeBlock
                     cpu.eip += getX86Length() - current.delta;
                 else
                     cpu.eip += current.next.delta - current.delta;
+            }
+
+            if (e.getType() == ProcessorException.Type.UNDEFINED) {
+                System.err.printf("[IPMB-UNDEFINED] opcode=%s delta=0x%x eip=0x%08x%n",
+                    current.getClass().getSimpleName(), current.delta, cpu.eip);
             }
 
             if (e.getType() != ProcessorException.Type.PAGE_FAULT)

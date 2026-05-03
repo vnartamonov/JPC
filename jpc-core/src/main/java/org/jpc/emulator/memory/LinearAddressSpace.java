@@ -705,6 +705,8 @@ public final class LinearAddressSpace extends AddressSpace implements HardwareCo
         try {
             return memory.executeProtected(cpu, offset & AddressSpace.BLOCK_MASK);
         } catch (ProcessorException p) {
+            if (p.getType() == ProcessorException.Type.UNDEFINED)
+                System.err.printf("[LAS-UNDEFINED] eip=0x%08x memory=%s%n", cpu.eip, memory.getClass().getSimpleName());
             cpu.handleProtectedModeException(p);
             return 1;
         } catch (SpanningDecodeException e)

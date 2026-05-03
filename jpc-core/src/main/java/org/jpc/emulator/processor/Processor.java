@@ -1300,7 +1300,7 @@ public class Processor implements HardwareComponent
                     features |= (1<< 5);  // support RDMSR/WRMSR
                     features |= (1<< 7);  // Machine Check exception
                     features |= (1<< 8);  // Support CMPXCHG8B instruction
-                    //features |= (1<< 9);   // APIC on chip
+                    features |= (1<< 9);   // APIC on chip
                     //features |= (1<<11);  // SYSENTER/SYSEXIT
                     features |= (1<<13);  // Support Global pages.
                     features |= (1<<14);  // Machine check architecture
@@ -1356,7 +1356,7 @@ public class Processor implements HardwareComponent
                     features |= (1<< 7);  // Machine Check exception
 
                     features |= (1<< 8);  // Support CMPXCHG8B instruction - Bochs doesn't have this!
-                    //features |= (1<< 9);   // APIC on chip
+                    features |= (1<< 9);   // APIC on chip
                     // (1<<10) is reserved
                     features |= (1<<11);  // SYSENTER/SYSEXIT
 
@@ -4161,6 +4161,9 @@ public class Processor implements HardwareComponent
         Segment savedCS = cs;
         Segment savedSS = ss;
 
+        if (pe.getType() == ProcessorException.Type.UNDEFINED) {
+            new RuntimeException("[HPME-UNDEFINED] eip=0x" + Integer.toHexString(savedEIP)).printStackTrace(System.err);
+        }
         if (Option.log_fault.isSet()) {
             LOGGING.log(Level.INFO, "{0}", FaultLogger.format(this, pe, savedEIP, savedESP));
         }
