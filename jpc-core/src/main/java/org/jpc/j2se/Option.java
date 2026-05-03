@@ -57,6 +57,8 @@ public abstract class Option {
     public static final Switch log_fault = createSwitch("log-fault");
     public static final Opt eip_poll = opt("eip-poll");
     public static final Switch log_tlb_null = createSwitch("log-tlb-null");
+    public static final Switch no_mp = createSwitch("no-mp");
+    public static final Switch no_acpi = createSwitch("no-acpi");
 
     public static final Switch printCHS = createSwitch("printCHS");
     public static final Switch help = createSwitch("help");
@@ -124,6 +126,8 @@ public abstract class Option {
         System.out.println("-trace-ide - log every ATA/ATAPI command issued to IDEChannel at INFO level");
         System.out.println("-log-fault - dump CPU state (registers, instruction bytes, top-of-stack) at every protected-mode/v8086 exception dispatch");
         System.out.println("-eip-poll $ms - log a one-line CPU snapshot (EIP, mode, key regs) every $ms milliseconds; useful when the guest hangs without faulting");
+        System.out.println("-no-mp - omit the Intel MP 1.4 table, LAPIC stub and IO-APIC stub; OS falls back to PIC-only mode (useful when APIC stubs cause guest crashes)");
+        System.out.println("-no-acpi - omit the ACPI 1.0 tables (RSDP/RSDT/MADT/FACP/DSDT); OS uses legacy BIOS enumeration instead");
         System.out.println();
         System.out.println("-sound - enable sound");
         System.out.println();

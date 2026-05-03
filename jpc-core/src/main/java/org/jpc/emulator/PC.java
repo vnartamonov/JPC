@@ -174,10 +174,13 @@ public class PC {
 
         //BIOSes
         parts.add(new SystemBIOS(Option.bios.value("/resources/bios/bios.bin")));
-        parts.add(new MpTable());
-        parts.add(new Acpi());
-        parts.add(new LocalApic());
-        parts.add(new IoApic());
+        if (!Option.no_mp.isSet()) {
+            parts.add(new MpTable());
+            parts.add(new LocalApic());
+            parts.add(new IoApic());
+        }
+        if (!Option.no_acpi.isSet())
+            parts.add(new Acpi());
         parts.add(new VGABIOS("/resources/bios/vgabios.bin"));
 
         if (Option.sound.value())
